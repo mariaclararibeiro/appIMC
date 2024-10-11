@@ -1,17 +1,21 @@
 import { Form } from '@/components/Form/Form';
 import { StyleSheet, View } from 'react-native';
 
-
-
 export default function HomeScreen() {
   return (
-    <View>
-      <Form></Form>
+    <View style={styles.container}>
+      <Form />
     </View>
-    );
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff', 
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,9 +28,8 @@ const styles = StyleSheet.create({
   reactLogo: {
     height: 178,
     width: 290,
+    position: 'absolute',
     bottom: 0,
     left: 0,
-    position: 'absolute',
   },
 });
-
