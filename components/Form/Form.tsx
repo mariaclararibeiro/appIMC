@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View, TextInput } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { blue } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 export function Form() {
@@ -7,14 +8,18 @@ export function Form() {
     const [peso, setPeso] = useState('');
     const [imc, setImc] = useState('');
 
-    function calcularImc() {
-        let totalImc = (peso / (altura * altura)).toFixed(2);
-        setImc(totalImc);
-    }
+    const [imcList, setImcList] = useState([]);
 
-    function validarImc() {
-        if (peso !== '' && altura !== '') {
-            calcularImc();
+
+    function validarImc() 
+    {
+        console.log(imcList);
+        if (peso !== undefined && altura !== undefined) {
+            let totalImc = (peso / (altura * altura)).toFixed(2);
+
+             imcList.push(totalImc) //add um novo indice
+            setImc(totalImc) //Imc recebe novo resultado
+
             setAltura('');
             setPeso('');
         }
@@ -25,26 +30,40 @@ export function Form() {
             <View style={styles.form}>
                 <Text style={styles.formLabel}>Altura:</Text>
                 <TextInput
+                onChangeText={setAltura}
+                inputMode="numeric"
                     placeholder="Ex. 1.75"
                     value={altura}
-                    onChangeText={setAltura}
-                    keyboardType="numeric"
                     style={styles.formInput}
                 />
 
                 <Text style={styles.formLabel}>Peso:</Text>
                 <TextInput
+                    onChangeText={setPeso}
+                    inputMode="numeric"
                     placeholder="Ex. 67.5"
                     value={peso}
-                    onChangeText={setPeso}
-                    keyboardType="numeric"
                     style={styles.formInput}
                 />
 
-                <Pressable onPress={validarImc} style={styles.formButtom}>
+                <Pressable 
+                    onPress={validarImc} 
+                    style={styles.formButtom}>
+
                     <Text style={styles.formButtonText}>Calcular</Text>
                 </Pressable>
                 <Text style={styles.maridani}>{imc}</Text>
+
+                <FlatList
+                    data={imcList.reverse()}
+                    renderItem={({item}) => {
+                        return (
+                            <View>
+                                <Text>{item}</Text>
+                            </View>
+                        )
+                    }}
+                />
             </View>
         </View>
     );
@@ -104,7 +123,7 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
         padding: 10,
         margin: 30,
-        alignItems: "center",
+        alignItems: "center", 
         justifyContent: "center",
         fontSize: 30,
         color: "blue",
